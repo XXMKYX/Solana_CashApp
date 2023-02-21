@@ -30,11 +30,11 @@ const NavMenu = ({ connected, publicKey }) => {
                     <NavMenuItem key={i} Icon={icon} item={item} current={current} action={action} />
                 ))}
                 <li>
-                    
-                    <button className="flex space-x-3">
+                    <WalletMultiButton/> 
+                    {/*<button className="flex space-x-3">
                         <UserCircleIcon style={{ height: 24, width: 24, color: '#00e7ff' }} />
                         <span className="text-sm font-semibold text-[#00e7ff]">{connected ? truncate(publicKey.toString()) : 'Connect Wallet'}</span>
-                    </button>
+                    </button>*/}
                 </li>
             </ul>
         </nav >

@@ -14,7 +14,10 @@ function MyApp({ Component, pageProps }) {
                 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
                 <title>Cash App</title>
             </Head>
-            <Component {...pageProps} />
+            {/**Solo entra al index  */}
+            <WalletConnectionProvider>
+                <Component {...pageProps} />
+            </WalletConnectionProvider>
             
         </>
     )
