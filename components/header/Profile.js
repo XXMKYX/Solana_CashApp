@@ -1,4 +1,6 @@
 import { truncate } from "../../utils/string"
+
+
 const Profile = ({ setModalOpen, avatar, userAddress }) => {
     const onProfileOpen = () => {
         setModalOpen(true)
