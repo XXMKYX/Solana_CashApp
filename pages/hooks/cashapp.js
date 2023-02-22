@@ -15,6 +15,9 @@ export const useCashApp = () =>{
         if(connected){
             setAvatar(getAvatarUrl(publicKey.toString()))
             setUserAddress(publicKey.toString())
+        }else{
+            setAvatar(getAvatarUrl('default'))
+            setUserAddress('default')
         }
     })
 
