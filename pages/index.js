@@ -29,7 +29,7 @@ const Home = () => {
 
     return (
         <div className="flex min-h-screen ">
-            <header className="flex w-[250px] flex-col bg-[#2F1B6E] p-12">
+            <header className="flex w-[260px] flex-col bg-gradient-to-r from-indigo-800 via-purple-600 to-violet-600 p-11">
                 <Profile setModalOpen={setTransactionQRModalOpen} avatar={avatar} userAddress={userAddress} />
                 <TransactionQRModal modalOpen={transactionQRModalOpen} setModalOpen={setTransactionQRModalOpen} userAddress={userAddress} myKey={publicKey} />
 
