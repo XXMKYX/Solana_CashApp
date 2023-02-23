@@ -15,9 +15,23 @@ export const useCashApp = () =>{
     const [receiver, setReceiver] = useState('')
     const [transactionPurpose, setTransactionPurpose] = useState('')
 
+    const [newTransactionModalOpen, setNewTransactionModalOpen] = useState(false)
 
     const [amount, setAmount] = useState(0)
     const {connection} = useConnection()
+    //Local Storage
+    const useLocalStorage = (storageKey, fallbackState) => {
+        const[value,setValue] = useState(
+            JSON.parse(localStorage.getItem(storageKey)) ?? fallbackState
+        )
+        useEffect(() => {
+            localStorage.setItem(storageKey,JSON.stringify(value));
+        },[value,setValue])
+        return [value,setValue]
+    }
+
+    const [transactions,setTransactions] = useLocalStorage('transactions',[])
+
     // Get Avatar based on the userAddress
     useEffect(() => {
         if(connected){
@@ -27,7 +41,7 @@ export const useCashApp = () =>{
             setAvatar(getAvatarUrl('default'))
             setUserAddress('default')
         }
-    }),[connected]
+    },[connected])
 
     //Transaccion 
     const makeTrasaction = async(fromWallet, toWallet, amount, reference) =>{
@@ -64,7 +78,7 @@ export const useCashApp = () =>{
     }
 
     //Funcion para ejecutar la transaccion (Boton)
-    const doTransaction = async({amount,receiver,transaccionPurpuse}) =>{
+    const doTransaction = async({amount,receiver,transactionPurpose}) =>{
         const fromWallet = publicKey
         const toWallet = new PublicKey(receiver) //Toma el string y lo pasa como publicKey
         const bnAmount = new BigNumber(amount) //Details
@@ -74,10 +88,41 @@ export const useCashApp = () =>{
         const txnHash = await sendTransaction(transaccion,connection)
         console.log(txnHash) //Visualizamos el hask para consultarlo en SolScan
 
-        //Historial de transacciones
-
-
+        //Historial de transacciones 
+        const newID = (transactions.length + 1).toString() //Comienza en 0, por eso + 1
+        //Objeto (Se almacenara en el Array del LocalStorage)
+        const newTransaction = {
+            id: newID,
+            from: {
+                name: publicKey,
+                handle: publicKey,
+                avatar: avatar,
+                verified: true,
+            },
+            to: {
+                name: receiver,
+                handle: '-',
+                avatar: getAvatarUrl(receiver.toString()), //Se debe obtener en String ya que requerimos la PublicKey
+                verified: false
+            },
+            //Al seleccionar arrojara la descripcion
+            description: transactionPurpose,
+            transactionDate: new Date(),
+            status: 'Completed',
+            amount: amount,
+            source: '-',
+            identifier: '-',
+            //txnHash: txnHash
+        };
+        setNewTransactionModalOpen(false) //Close modal
+        setTransactions([newTransaction, ...transactions]) //... obtiene todo el array de transacciones de manera ordenada
     }
 
-    return{connected,publicKey,avatar,userAddress,doTransaction,amount,setAmount,receiver, setReceiver,transactionPurpose, setTransactionPurpose}
+    return{
+        connected,publicKey,avatar,
+        userAddress,doTransaction,amount,setAmount,
+        receiver, setReceiver,transactionPurpose,setTransactionPurpose,
+        transactions, setTransactions,
+        setNewTransactionModalOpen, newTransactionModalOpen
+    }
 }

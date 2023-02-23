@@ -7,7 +7,7 @@ import NewTransactionModal from '../components/transaction/NewTransactionModal'
 import TransactionsList from '../components/transaction/TransactionsList'
 import { useWallet } from '@solana/wallet-adapter-react'
 import TransactionQRModal from '../components/transaction/TransactionQRModal'
-import { transactions } from '../data/transactions'
+//import { transactions } from '../data/transactions'
 import { getAvatarUrl } from "../functions/getAvatarUrl"
 //Hoock customizado para la conexion
 import { useCashApp } from './hooks/cashapp'
@@ -17,14 +17,14 @@ import { useCashApp } from './hooks/cashapp'
 
 const Home = () => {
     //const { connected, publicKey} = useWallet() //Ahora es un hook from hooks/cashapp.js
-    const{connected,publicKey,avatar,userAddress} = useCashApp() //Es mejor pasarla po Hook que por Props ya que asi la podemos mandar donde sea y no solo al child
+    const{connected,publicKey,avatar,userAddress,transactions, newTransactionModalOpen,setNewTransactionModalOpen} = useCashApp() //Es mejor pasarla po Hook que por Props ya que asi la podemos mandar donde sea y no solo al child
         //console.log(connected, "Conexion a la Wallet exitosa")
         //console.log(publicKey.toString(), "PublicKey")
     //const [userAddress, setUserAddress] = useState("11111111111111111111111111111111")
     //const [avatar, setAvatar] = useState("")
-
+    //console.log(transactions,"Transaccion")
     const [transactionQRModalOpen, setTransactionQRModalOpen] = useState(false)
-    const [newTransactionModalOpen, setNewTransactionModalOpen] = useState(false)
+    //const [newTransactionModalOpen, setNewTransactionModalOpen] = useState(false)
 
 
     return (
@@ -41,7 +41,7 @@ const Home = () => {
 
             <main className="flex flex-1 flex-col">
                 <SearchBar />
-                {/*<TransactionsList connected={connected} transactions={transactions} />*/}
+                <TransactionsList connected={connected} transactions={transactions} />
             </main>
         </div>
     )
