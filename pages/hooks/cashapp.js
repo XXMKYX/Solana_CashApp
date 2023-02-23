@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js';
 export const useCashApp = () =>{
 
     const [avatar, setAvatar] = useState("")
-    const [userAddress, setUserAddress] = useState("11111111111111111111111111111111")
+    const [userAddress, setUserAddress] = useState("404")
     const {connected,publicKey,sendTransaction} = useWallet()
 
    // const [amount, setAmount] = useState(0)
@@ -37,6 +37,7 @@ export const useCashApp = () =>{
         if(connected){
             setAvatar(getAvatarUrl(publicKey.toString()))
             setUserAddress(publicKey.toString())
+            //location.reload()
         }else{
             setAvatar(getAvatarUrl('default'))
             setUserAddress('default')
@@ -103,7 +104,9 @@ export const useCashApp = () =>{
                 name: receiver,
                 handle: '-',
                 avatar: getAvatarUrl(receiver.toString()), //Se debe obtener en String ya que requerimos la PublicKey
-                verified: false
+                verified: false,
+                txnHash: txnHash
+                
             },
             //Al seleccionar arrojara la descripcion
             description: transactionPurpose,
@@ -114,6 +117,7 @@ export const useCashApp = () =>{
             identifier: '-',
             //txnHash: txnHash
         };
+        console.log(txnHash)
         setNewTransactionModalOpen(false) //Close modal
         setTransactions([newTransaction, ...transactions]) //... obtiene todo el array de transacciones de manera ordenada
     }

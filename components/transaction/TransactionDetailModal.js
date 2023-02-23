@@ -16,9 +16,10 @@ const TransactionDetailModal = ({ currentTransaction, modalOpen, setModalOpen })
 
                 <TransactionMetadata
                     metadata={{
-                        amount: `${Number(currentTransaction?.amount).toFixed(2)} SOL`,
+                        amount: `${Number(currentTransaction?.amount).toFixed(8)} SOL`,
                         to: currentTransaction?.to.name,
                         from: currentTransaction?.from.name,
+                        SingTransaction: currentTransaction?.to.txnHash
                     }}
                 />
 
