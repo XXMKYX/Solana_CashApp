@@ -26,6 +26,8 @@ const Home = () => {
     const [transactionQRModalOpen, setTransactionQRModalOpen] = useState(false)
     //const [newTransactionModalOpen, setNewTransactionModalOpen] = useState(false)
 
+    const sentTxs = transactions.filter(tx => tx.from.name == userAddress)
+    const rcvTxs = transactions.filter(tx => tx.to.name == userAddress)
 
     return (
         <div className="flex min-h-screen ">
@@ -41,7 +43,8 @@ const Home = () => {
 
             <main className="flex flex-1 flex-col">
                 <SearchBar />
-                <TransactionsList connected={connected} transactions={transactions} />
+                <TransactionsList title={'Txs Transactions'} connected={connected} transactions={sentTxs} />
+                <TransactionsList title={'Rxs Transactions'} connected={connected} transactions={rcvTxs} />
             </main>
         </div>
     )

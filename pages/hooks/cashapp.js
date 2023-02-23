@@ -16,6 +16,7 @@ export const useCashApp = () =>{
     const [transactionPurpose, setTransactionPurpose] = useState('')
 
     const [newTransactionModalOpen, setNewTransactionModalOpen] = useState(false)
+    const [newDepositModalOpen, setNewDepositModalOpen] = useState(false)
 
     const [amount, setAmount] = useState(0)
     const {connection} = useConnection()
@@ -31,6 +32,7 @@ export const useCashApp = () =>{
     }
 
     const [transactions,setTransactions] = useLocalStorage('transactions',[])
+    const [deposits,setdeposits] = useLocalStorage('deposit',[])
 
     // Get Avatar based on the userAddress
     useEffect(() => {
@@ -117,9 +119,12 @@ export const useCashApp = () =>{
             identifier: '-',
             //txnHash: txnHash
         };
+      
+        
         console.log(txnHash)
         setNewTransactionModalOpen(false) //Close modal
         setTransactions([newTransaction, ...transactions]) //... obtiene todo el array de transacciones de manera ordenada
+        
     }
 
     return{
@@ -130,3 +135,7 @@ export const useCashApp = () =>{
         setNewTransactionModalOpen, newTransactionModalOpen
     }
 }
+    
+
+
+
