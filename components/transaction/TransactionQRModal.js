@@ -4,7 +4,8 @@ import { PublicKey, Keypair } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useEffect, useRef, useState } from 'react';
-import { truncate } from "../../utils/string"
+import { truncate } from "../../utils/string";
+import QRCodeStyling from '@solana/qr-code-styling';
 
 
 
@@ -31,6 +32,25 @@ const TransactionQRModal = ({ modalOpen, setModalOpen, userAddress, setQrCode })
         const label = "Sol payments app"
         const message = "Ty 4 ur payment!"
         //Parametros que generara el QR
+        
+        const qrCode = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            image:
+              "https://seeklogo.com/images/S/solana-sol-logo-12828AD23D-seeklogo.com.png?v=637944448890000000",
+            dotsOptions: {
+              color: "#4267b2",
+              type: "rounded"
+            },
+            imageOptions: {
+              crossOrigin: "anonymous",
+              margin: 20
+            }
+          });
+        
+        
+        
+        
         const urlParams = {
             recipient,
             amount,
@@ -39,11 +59,30 @@ const TransactionQRModal = ({ modalOpen, setModalOpen, userAddress, setQrCode })
             message
         }
         const url = encodeURL(urlParams)
+
+        /*const [url, setUrl] = useState(url2);
+        const [fileExt, setFileExt] = useState("png");
+        const ref = useRef(null);
+
+        useEffect(() => {
+            qrCode.append(ref.current);
+        }, []);
+
+        useEffect(() => {
+            qrCode.update({
+            data: url
+            });
+        }, [url]);*/
+
+
         const qr = createQR(url, 369, 'transparent') //Diseño QR
         //Validacion qrRef en HTML
         if(qrRef.current){
             qrRef.current.innerHTML = ''
             qr.append(qrRef.current)
+            
+
+
         }
         //Waiting transaction
         /*const interval = setInterval(async() => {
