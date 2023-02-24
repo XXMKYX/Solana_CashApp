@@ -1,4 +1,5 @@
-import React from "react";
+/*
+
 import Modal from "../Modal";
 import {
   createQR,
@@ -16,16 +17,24 @@ import { truncate } from "../../utils/string";
 import bs58 from "bs58";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-export default function TransactionQRModal(props) {
-  const { modalOpen, setModalOpen, userAddress, setQrCode, qrCode } = props;
-  const [QR, setQR] = useState(undefined);
+const TransactionQRModal = ({
+  modalOpen,
+  setModalOpen,
+  userAddress,
+  setQrCode,
+}) => {
   const qrRef = useRef();
   const { connection } = useConnection();
   const { publicKey } = useWallet();
+  console.log(publicKey?.toBase58());
   // Estado true to rerender QR
+  const loadQr = () => {
+    setQrCode(true);
+  };
 
   useEffect(() => {
     if (publicKey) {
+      console.log(publicKey.toString());
       const recipient = new PublicKey(publicKey.toJSON()); //PublicKey(userAddress)
       const amount = new BigNumber("1"); //Estatico, el QR enviara 1 SOL
       const reference = Keypair.generate().publicKey; //random keypair
@@ -43,38 +52,13 @@ export default function TransactionQRModal(props) {
       const qr = createQR(url, 369, "transparent"); //Diseño QR
       //Validacion qrRef en HTML
       if (qrRef.current) {
-        if (qrCode) {
-          qrRef.current.innerHTML = "";
-          qr.append(qrRef.current);
-        } else {
-          qrRef.current.innerHTML = null;
-        }
+        qrRef.current.innerHTML = "";
+        qr.append(qrRef.current);
       }
     }
-  }, [qrCode]);
+  }),
+    [publicKey];
 
-  if (!publicKey) {
-    console.log("publicKey is null / not logged");
-    return null;
-  }
-
-  return (
-    <>
-      <ModalQR
-        qrCode={qrCode}
-        setQrCode={setQrCode}
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        qrRef={qrRef}
-        userAddress={publicKey.toString()}
-      />
-    </>
-  );
-}
-
-function ModalQR(props) {
-  const { setQrCode, qrCode, setModalOpen, modalOpen, qrRef, userAddress } =
-    props;
   return (
     <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
       <div>
@@ -92,14 +76,10 @@ function ModalQR(props) {
           </p>
 
           <button
-            onClick={() => {
-              setQrCode(!qrCode);
-            }}
+            onClick={() => loadQr()}
             className="w-full rounded-lg bg-[#16d542] py-3 hover:bg-opacity-70"
           >
-            <span className="font-medium text-white">
-              {qrCode ? <>Hide QR code</> : <>Show QR code</>}
-            </span>
+            <span className="font-medium text-white">Load QR code</span>
           </button>
           <button className="w-full rounded-lg bg-[#16d542] py-3 hover:bg-opacity-70">
             <span className="font-medium text-white">Download QR code</span>
@@ -108,4 +88,11 @@ function ModalQR(props) {
       </div>
     </Modal>
   );
-}
+
+  
+};
+
+export default TransactionQRModal;
+
+
+*/
