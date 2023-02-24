@@ -2,7 +2,7 @@ import { ClockIcon, CurrencyDollarIcon, UserCircleIcon, Cog6ToothIcon } from '@h
 import { classNames } from '../../utils/classNames'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { truncate } from '../../utils/string'
-require('@solana/wallet-adapter-react-ui/styles.css')
+require('@solana/wallet-adapter-react-ui/styles.css') //Default Style to Wallet Connection button
 
 const NavMenu = ({ connected, publicKey }) => {
     const menus = [
@@ -30,7 +30,7 @@ const NavMenu = ({ connected, publicKey }) => {
                     <NavMenuItem key={i} Icon={icon} item={item} current={current} action={action} />
                 ))}
                 <li>
-                    <WalletMultiButton className='hover:text-pink-500 bg-gradient-to-r from-indigo-800 via-purple-600 to-violet-600'>
+                    <WalletMultiButton>
                     </WalletMultiButton> 
                     {/*<button className="flex space-x-3">
                         <UserCircleIcon style={{ height: 24, width: 24, color: '#00e7ff' }} />

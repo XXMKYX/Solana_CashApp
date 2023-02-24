@@ -2,7 +2,7 @@ import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {PhantomWalletAdapter} from "@solana/wallet-adapter-wallets"
 import { useMemo } from 'react';
-
+//Provider para la App
 const WalletConnectionProvider = ({children}) => {
     //E2E API Wallet por medio de useMEMO ReactHook 
     const endpoint = useMemo(() => "https://api.devnet.solana.com",[])
