@@ -9,18 +9,58 @@ import { truncate } from "../../utils/string"
 
 
 
-const TransactionQRModal = ({ modalOpen, setModalOpen, userAddress }) => {
-
-    // Set the state to true to rerender the component with generated QR
+const TransactionQRModal = ({ modalOpen, setModalOpen, userAddress, setQrCode }) => {
+    const qrRef = useRef()
+    const {connection} = useConnection()
+    // Estado true to rerender QR
     const loadQr = () => {
-
+        setQrCode(true)
     }
+    useEffect(() => {
+        let wal = 'G8yeWe4Jp3WzsGdnZ58iGvQF2Eb2768dCzSDAWb4ZWBj'
+        console.log(wal)
+        const recipient = new PublicKey(wal) //PublicKey(userAddress)
+       //G8yeWe4Jp3WzsGdnZ58iGvQF2Eb2768dCzSDAWb4ZWBj
+        //var message1 = userAddress;
+        //var userAddress2 = Base58.encode(new Buffer(message1));
+        //console.log(userAddress2)
+
+
+        const amount = new BigNumber("1") //Estatico, el QR enviara 1 SOL
+        const reference = Keypair.generate().publicKey //random keypair
+        const label = "Sol payments app"
+        const message = "Ty 4 ur payment!"
+        //Parametros que generara el QR
+        const urlParams = {
+            recipient,
+            amount,
+            reference,
+            label,
+            message
+        }
+        const url = encodeURL(urlParams)
+        const qr = createQR(url, 369, 'transparent') //Diseño QR
+        //Validacion qrRef en HTML
+        if(qrRef.current){
+            qrRef.current.innerHTML = ''
+            qr.append(qrRef.current)
+        }
+        //Waiting transaction
+        /*const interval = setInterval(async() => {
+            //console.log("Wating transaction...")
+            try{
+                const signatureInfo = await findReference(connection, reference, )
+            }catch(e){
+                console.log(e.message)
+            }
+        })*/
+    })
 
     return (
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
             <div >
                 <div className="flex flex-col items-center justify-center space-y-1">
-                    <div />
+                    <div ref={qrRef}/>
                 </div>
 
                 <div className="flex flex-col items-center justify-center space-y-1">

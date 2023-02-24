@@ -84,6 +84,7 @@ export const useCashApp = () =>{
     const doTransaction = async({amount,receiver,transactionPurpose}) =>{
         const fromWallet = publicKey
         const toWallet = new PublicKey(receiver) //Toma el string y lo pasa como publicKey
+        console.log(receiver)
         const bnAmount = new BigNumber(amount) //Details
         const reference = Keypair.generate().publicKey //Random PublicKey para la ref
         const transaccion = await makeTrasaction(fromWallet,toWallet,bnAmount,reference)

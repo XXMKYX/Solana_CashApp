@@ -29,11 +29,13 @@ const Home = () => {
     const sentTxs = transactions.filter(tx => tx.from.name == userAddress)
     const rcvTxs = transactions.filter(tx => tx.to.name == userAddress)
 
+    const [qrCode, setQrCode] = useState(false)
+
     return (
         <div className="flex min-h-screen ">
             <header className="flex w-[260px] flex-col bg-gradient-to-r from-indigo-800 via-purple-600 to-violet-600 p-11">
                 <Profile setModalOpen={setTransactionQRModalOpen} avatar={avatar} userAddress={userAddress} />
-                <TransactionQRModal modalOpen={transactionQRModalOpen} setModalOpen={setTransactionQRModalOpen} userAddress={userAddress} myKey={publicKey} />
+                <TransactionQRModal modalOpen={transactionQRModalOpen} setModalOpen={setTransactionQRModalOpen} userAddress={userAddress} myKey={publicKey} setQrCode={setQrCode}/>
 
                 <NavMenu connected={connected} publicKey={publicKey} />
 
