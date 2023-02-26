@@ -1,54 +1,88 @@
-import { ClockIcon, CurrencyDollarIcon, UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
-import { classNames } from '../../utils/classNames'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { truncate } from '../../utils/string'
-require('@solana/wallet-adapter-react-ui/styles.css') //Default Style to Wallet Connection button
+import {
+  ClockIcon,
+  ArrowsUpDownIcon,
+  CurrencyDollarIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
+import { classNames } from "../../utils/classNames";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { truncate } from "../../utils/string";
+require("@solana/wallet-adapter-react-ui/styles.css"); //Default Style to Wallet Connection button
 
-const NavMenu = ({ connected, publicKey }) => {
-    const menus = [
-        {
-            icon: ClockIcon,
-            item: 'Activity',
-            current: true,
-        },
-        {
-            icon: CurrencyDollarIcon,
-            item: 'Cash Card',
-            current: false,
-        },
-        {
-            icon: Cog6ToothIcon,
-            item: 'Settings',
-            current: false,
-        },
-    ]
+export default function NavMenu(props) {
+  const { publicKey, setIndex, index } = props;
+  const menus = [
+    {
+      icon: ClockIcon,
+      item: "Activity",
+      subIndex: 0,
+    },
+    {
+      icon: ArrowsUpDownIcon,
+      item: "Remesas",
+      subIndex: 1,
+    },
+    {
+      icon: Cog6ToothIcon,
+      item: "Settings",
+      subIndex: 2,
+    },
+  ];
 
-    return (
-        <nav className="flex flex-1 items-center justify-center">
-            <ul className="flex flex-col space-y-10">
-                {menus.map(({ icon, item, current, action }, i) => (
-                    <NavMenuItem key={i} Icon={icon} item={item} current={current} action={action} />
-                ))}
-                <li>
-                    <WalletMultiButton>
-                    </WalletMultiButton> 
-                    {/*<button className="flex space-x-3">
-                        <UserCircleIcon style={{ height: 24, width: 24, color: '#00e7ff' }} />
-                        <span className="text-sm font-semibold text-[#00e7ff]">{connected ? truncate(publicKey.toString()) : 'Connect Wallet'}</span>
-                    </button>*/}
-                </li>
-            </ul>
-        </nav >
-    )
+  return (
+    <>
+      <nav className="flex flex-1 flex-col items-center justify-evenly">
+        {publicKey && (
+          <div className="flex flex-1 flex-col justify-evenly">
+            <MenuNavBar menus={menus} index={index} setIndex={setIndex} />
+          </div>
+        )}
+        <div className="flex flex-1 flex-col justify-end">
+          <WalletMultiButton></WalletMultiButton>
+        </div>
+      </nav>
+    </>
+  );
 }
 
-const NavMenuItem = ({ Icon, item, current, action }) => {
-    return (
-        <li onClick={action} className={classNames('flex cursor-pointer space-x-3 transition-all hover:text-pink-500', current ? 'text-white' : 'text-[#fff]', 'font-semibold')}>
-            <Icon className="h-6 w-6 " />
-            <span>{item}</span>
-        </li>
-    )
+function NavMenuItem(props) {
+  const { setIndex, Icon, item, index, subIndex } = props;
+  return (
+    <>
+      <li
+        key={index}
+        onClick={() => setIndex(subIndex)}
+        className={classNames(
+          "flex cursor-pointer space-x-3",
+          index === subIndex
+            ? "text-white"
+            : "text-lightgray  transition-all hover:text-pink-500",
+          "font-semibold"
+        )}
+      >
+        <Icon className="h-6 w-6 " />
+        <span>{item}</span>
+      </li>
+    </>
+  );
 }
 
-export default NavMenu
+function MenuNavBar(props) {
+  const { menus, setIndex, index } = props;
+
+  return (
+    <>
+      {menus.map((i, id) => (
+        <NavMenuItem
+          key={id}
+          Icon={i.icon}
+          item={i.item}
+          subIndex={i.subIndex}
+          index={index}
+          setIndex={setIndex}
+        />
+      ))}
+    </>
+  );
+}

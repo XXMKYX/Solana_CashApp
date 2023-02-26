@@ -16,38 +16,47 @@ import { truncate } from "../../utils/string";
 import bs58 from "bs58";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-export default function TransactionQRModal(props) {
+export default function TransactionQRSendModal(props) {
   const { modalOpen, setModalOpen, userAddress, setQrCode, qrCode } = props;
   const [qtySol, setQtySol] = useState(1);
+  const [receiptWallet, setReceiptWallet] = useState("");
   const qrRef = useRef();
   const { connection } = useConnection();
   const { publicKey } = useWallet();
 
   useEffect(() => {
-    if (publicKey) {
+    let recipient = null;
+    if (publicKey && receiptWallet) {
       if (!modalOpen) setQrCode(false);
-      const recipient = new PublicKey(publicKey.toJSON()); //PublicKey(userAddress)
-      const amount = new BigNumber(qtySol); //Estatico, el QR enviara 1 SOL
-      const reference = Keypair.generate().publicKey; //random keypair
-      const label = "SOL Payment";
-      const message = "Thank you!";
-      //Parametros que generara el QR
-      const urlParams = {
-        recipient,
-        amount,
-        reference,
-        label,
-        message,
-      };
-      const url = encodeURL(urlParams);
-      const qr = createQR(url, 369, "transparent"); //Diseño QR
-      //Validacion qrRef en HTML
-      if (qrRef.current) {
-        if (qrCode) {
-          qrRef.current.innerHTML = "";
-          qr.append(qrRef.current);
-        } else {
-          qrRef.current.innerHTML = null;
+      try {
+        recipient = new PublicKey(receiptWallet.toString()); //PublicKey(userAddress)
+      } catch (error) {
+        alert("Wallet no válida");
+      }
+
+      if (recipient) {
+        const amount = new BigNumber(qtySol); //Estatico, el QR enviara 1 SOL
+        const reference = Keypair.generate().publicKey; //random keypair
+        const label = "SOL Payment";
+        const message = "Thank you!";
+        //Parametros que generara el QR
+        const urlParams = {
+          recipient,
+          amount,
+          reference,
+          label,
+          message,
+        };
+        const url = encodeURL(urlParams);
+        const qr = createQR(url, 369, "transparent"); //Diseño QR
+        //Validacion qrRef en HTML
+        if (qrRef.current) {
+          if (qrCode) {
+            qrRef.current.innerHTML = "";
+            qr.append(qrRef.current);
+          } else {
+            qrRef.current.innerHTML = null;
+          }
         }
       }
     }
@@ -69,6 +78,8 @@ export default function TransactionQRModal(props) {
         userAddress={publicKey.toString()}
         qtySol={qtySol}
         setQtySol={setQtySol}
+        receiptWallet={receiptWallet}
+        setReceiptWallet={setReceiptWallet}
       />
     </>
   );
@@ -83,7 +94,8 @@ function ModalQR(props) {
     setModalOpen,
     modalOpen,
     qrRef,
-    userAddress,
+    setReceiptWallet,
+    receiptWallet,
   } = props;
   return (
     <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
@@ -93,11 +105,22 @@ function ModalQR(props) {
         </div>
 
         <div className="">
-          <p className="text-center text-lg font-medium text-gray-800">
-            {(userAddress)}
-          </p>
           <p className="text-md text-center font-light text-gray-600">
-            Indica cantidad de SOL a recibir
+            Indica wallet a la que quieres pagar
+          </p>
+          <input
+            type="text"
+            required
+            className="!my-2 rounded-md bg-gray-200 p-2 text-center"
+            placeholder="wallet"
+            disabled={qrCode}
+            value={receiptWallet}
+            onChange={(e) => {
+              setReceiptWallet(e.currentTarget.value);
+            }}
+          />
+          <p className="text-md text-center font-light text-gray-600">
+            Indica cantidad de SOL a pagar
           </p>
           <input
             type="number"
@@ -116,8 +139,8 @@ function ModalQR(props) {
           {!qrCode && (
             <button
               onClick={() => {
-                if (qtySol > 0) setQrCode(!qrCode);
-                else alert("Pon cantidad válida de SOL");
+                if (qtySol > 0 && receiptWallet) setQrCode(!qrCode);
+                else alert("Pon cantidad válida de SOL y/o wallet");
               }}
               className="mr-5 w-full rounded-lg bg-[#16d542] p-2 hover:bg-opacity-70"
             >
