@@ -1,3 +1,15 @@
+import { MirrorWorld, ClusterEnvironment, IUser } from "@mirrorworld/web3.js";
+
+
+import { useState } from "react";
+const mirrorworld = new MirrorWorld({
+  apiKey: "mw_vwRDYXmbncKDIM6BSF0Tl2PPISGpY4kQjuo",
+  env: ClusterEnvironment.testnet, // Can be ClusterEnvionment.mainnet for mainnet
+});
+
+
+
+
 import {
   ClockIcon,
   ArrowsUpDownIcon,
@@ -8,10 +20,40 @@ import {
 import { classNames } from "../../utils/classNames";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { truncate } from "../../utils/string";
+import Home from "../../pages";
+import { useCashApp } from "../../pages/hooks/cashapp";
 require("@solana/wallet-adapter-react-ui/styles.css"); //Default Style to Wallet Connection button
 
+
+
+
 export default function NavMenu(props) {
+  const [mainUser, setMainUser] = useState();
+  const [tokens, setTokens] = useState();
   const { publicKey, setIndex, index } = props;
+  
+  async function login() {
+    const { user } = await mirrorworld.login();
+    let final = JSON.stringify(user);
+    setMainUser(JSON.parse(final));
+    await getTokens();
+    MWSDK.OpenWallet()
+  }
+
+  async function transfer() {
+    const transactionResult = await mirrorworld.transferSOL({
+      recipientAddress,
+      amount,
+    });
+
+    console.log(transactionResult);
+  }
+
+  async function getTokens() {
+    const data = await mirrorworld.getTokens();
+    let final = JSON.stringify(data);
+    setTokens(JSON.parse(final));
+  }
   const menus = [
     {
       icon: ClockIcon,
@@ -39,8 +81,14 @@ export default function NavMenu(props) {
           </div>
         )}
         <div className="flex flex-1 flex-col justify-end">
-          <WalletMultiButton></WalletMultiButton>
+
+          <WalletMultiButton></WalletMultiButton>         
+
         </div>
+        <button  onClick={login}>
+            ¿No tienes wallet?
+        </button>
+        
       </nav>
     </>
   );

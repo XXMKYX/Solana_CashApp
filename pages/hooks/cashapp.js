@@ -14,10 +14,12 @@ import {
 import BigNumber from "bignumber.js";
 
 export const useCashApp = () => {
+  
+
   const [avatar, setAvatar] = useState("");
   const [userAddress, setUserAddress] = useState("404");
   const { connected, publicKey, sendTransaction } = useWallet();
-
+ 
   // const [amount, setAmount] = useState(0)
   const [receiver, setReceiver] = useState("");
   const [transactionPurpose, setTransactionPurpose] = useState("");
@@ -52,6 +54,13 @@ export const useCashApp = () => {
       setUserAddress("default");
     }
   }, [connected]);
+
+  const   login= async()=> {
+    const { user } = await mirrorworld.login();
+    let final = JSON.stringify(user);
+    setMainUser(JSON.parse(final));
+    await getTokens();
+  }
 
   //Transaccion
   const makeTrasaction = async (fromWallet, toWallet, amount, reference) => {
@@ -154,5 +163,8 @@ export const useCashApp = () => {
     setTransactions,
     setNewTransactionModalOpen,
     newTransactionModalOpen,
+    login,
+   
+  
   };
 };

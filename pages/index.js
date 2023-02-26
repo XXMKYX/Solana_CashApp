@@ -32,6 +32,8 @@ export default function Home() {
   const rcvTxs = transactions.filter((tx) => tx.to.name == userAddress);
 
   const [qrCode, setQrCode] = useState(false);
+  
+ 
 
   return (
     <div className="flex min-h-screen ">
