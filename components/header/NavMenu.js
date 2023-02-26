@@ -1,6 +1,5 @@
 import { MirrorWorld, ClusterEnvironment, IUser } from "@mirrorworld/web3.js";
 
-
 import { useState } from "react";
 const mirrorworld = new MirrorWorld({
   apiKey: "mw_vwRDYXmbncKDIM6BSF0Tl2PPISGpY4kQjuo",
@@ -37,7 +36,6 @@ export default function NavMenu(props) {
     let final = JSON.stringify(user);
     setMainUser(JSON.parse(final));
     await getTokens();
-    MWSDK.OpenWallet()
   }
 
   async function transfer() {
@@ -88,7 +86,34 @@ export default function NavMenu(props) {
         <button  onClick={login}>
             ¿No tienes wallet?
         </button>
-        
+        {mainUser ? (
+        <>
+          <div className="user-info">
+            <div className="user-info__user">
+              <ul>
+                <li>Username: {mainUser["username"]}</li>
+                <li>ETH address: {mainUser["wallet"]["eth_address"]}</li>
+                <li>SOL address: {mainUser["wallet"]["sol_address"]}</li>
+              </ul>
+            </div>
+
+            {tokens ? (
+              <>
+                <div className="user-info__tokens">
+                  <ul>
+                    <li>SOL: {tokens["sol"]}</li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+          <button onClick={transfer}>transfer</button>
+        </>
+      ) : (
+        <></>
+      )}
       </nav>
     </>
   );
