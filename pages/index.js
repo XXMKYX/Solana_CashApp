@@ -14,7 +14,7 @@ import Remesas from "../components/main/remesas/remesas";
 /* Methods */
 import { getAvatarUrl } from "../functions/getAvatarUrl";
 import { useCashApp } from "./hooks/cashapp";
-import FabIcon from "../components/chat/fab/fabIcon";
+//import FabIcon from "../components/chat/fab/fabIcon";
 
 export default function Home() {
   const {
@@ -123,9 +123,7 @@ function RightMenu(props) {
           setQrCode={setQrCode}
         />
       )}
-      <div className="absolute !flex !flex-col !justify-end ">
-        <FabIcon />
-      </div>
+      <div className="absolute !flex !flex-col !justify-end "></div>
     </>
   );
 }
