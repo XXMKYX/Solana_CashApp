@@ -1,13 +1,10 @@
 import { MirrorWorld, ClusterEnvironment, IUser } from "@mirrorworld/web3.js";
-
-import { useState } from "react";
+import Action from "./Action";
+import { useState, useEffect } from "react";
 const mirrorworld = new MirrorWorld({
   apiKey: "mw_vwRDYXmbncKDIM6BSF0Tl2PPISGpY4kQjuo",
   env: ClusterEnvironment.testnet, // Can be ClusterEnvionment.mainnet for mainnet
 });
-
-
-
 
 import {
   ClockIcon,
@@ -22,15 +19,13 @@ import { truncate } from "../../utils/string";
 import Home from "../../pages";
 import { useCashApp } from "../../pages/hooks/cashapp";
 require("@solana/wallet-adapter-react-ui/styles.css"); //Default Style to Wallet Connection button
-
-
-
+import { getAvatarUrl } from "../../functions/getAvatarUrl";
 
 export default function NavMenu(props) {
   const [mainUser, setMainUser] = useState();
   const [tokens, setTokens] = useState();
   const { publicKey, setIndex, index } = props;
-  
+  const [avatar, setAvatar] = useState("");
   async function login() {
     const { user } = await mirrorworld.login();
     let final = JSON.stringify(user);
@@ -44,7 +39,7 @@ export default function NavMenu(props) {
       amount,
     });
 
-    console.log(transactionResult);
+    console.log("tx", transactionResult);
   }
 
   async function getTokens() {
@@ -52,6 +47,14 @@ export default function NavMenu(props) {
     let final = JSON.stringify(data);
     setTokens(JSON.parse(final));
   }
+  //let mirrorWallet = mainUser["wallet"]["sol_address"]
+  //const mirrorUser = mainUser["username"]
+
+  //console.log(mainUser["username"])
+  // console.log(mirrorUser)
+  //  publicKey =
+
+  //console.log(mainUser.wallet.sol_address)
   const menus = [
     {
       icon: ClockIcon,
@@ -79,40 +82,64 @@ export default function NavMenu(props) {
           </div>
         )}
         <div className="flex flex-1 flex-col justify-end">
-
-          <WalletMultiButton></WalletMultiButton>         
-
+          {mainUser ? (
+            <></>
+          ) : (
+            <>
+              <WalletMultiButton></WalletMultiButton>
+            </>
+          )}
         </div>
-        <button  onClick={login}>
-            ¿No tienes wallet?
-        </button>
-        {mainUser ? (
-        <>
-          <div className="user-info">
-            <div className="user-info__user">
-              <ul>
-                <li>Username: {mainUser["username"]}</li>
-                <li>SOL address: {mainUser["wallet"]["sol_address"]}</li>
-              </ul>
-            </div>
 
-            {tokens ? (
-              <>
-                <div className="user-info__tokens">
-                  <ul>
-                    <li>SOL: {tokens["sol"]}</li>
-                  </ul>
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
-          </div>
-          
-        </>
-      ) : (
-        <></>
-      )}
+        {publicKey ? (
+          <></>
+        ) : (
+          <>
+            <button onClick={login}>¿No tienes wallet?</button>
+          </>
+        )}
+
+        {mainUser ? (
+          <>
+            <div className="user-info">
+              <div className="user-info__user">
+                <ul>
+                  <li>
+                    ......................Username: {mainUser["username"]}
+                  </li>
+                  <li>
+                    ......................SOL address:{" "}
+                    {mainUser["wallet"]["sol_address"]}
+                  </li>
+                  <br></br>
+                  <li>
+                    ......................La implementacion de MirrorWorld como
+                  </li>
+                  <li>
+                    ......................alternativa a phantom esta por
+                    implementarce
+                  </li>
+                  <li>......................REFRESCA LA PAGINA Y ENTRA CON </li>
+                  <li>......................PHANTOM</li>
+                </ul>
+              </div>
+
+              {tokens ? (
+                <>
+                  <div className="user-info__tokens">
+                    <ul>
+                      <li>SOL: {tokens["sol"]}</li>
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </nav>
     </>
   );
