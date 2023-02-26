@@ -92,7 +92,6 @@ export default function NavMenu(props) {
             <div className="user-info__user">
               <ul>
                 <li>Username: {mainUser["username"]}</li>
-                <li>ETH address: {mainUser["wallet"]["eth_address"]}</li>
                 <li>SOL address: {mainUser["wallet"]["sol_address"]}</li>
               </ul>
             </div>
@@ -109,7 +108,7 @@ export default function NavMenu(props) {
               <></>
             )}
           </div>
-          <button onClick={transfer}>transfer</button>
+          
         </>
       ) : (
         <></>
