@@ -68,7 +68,7 @@ export const useCashApp = () => {
 //SmartContract Anhor //
 const anchorWallet = useAnchorWallet()
 const [initialized, setInitialized] = useState(false) //Comienza en false y cuando inicializa cambiaria a true
-const [transactionPending, setTrasactionPending] = useState(false)
+const [transactionPending, setTransactionPending] = useState(false)
 
 //averigua que programa es
 const program = useMemo (()=>{
@@ -113,7 +113,7 @@ const initializeUser = async()=>{
     if(program && publicKey){
         try {
             console.log("try")
-            setTrasactionPending(true)
+            setTransactionPending(true)
             const[profilePda] = findProgramAddressSync([utf8.encode("USER_STATE"), //Encuenttra un PDA con las seeds
             publicKey.toBuffer()],program.programId)
             
@@ -132,11 +132,13 @@ const initializeUser = async()=>{
             console.log(error)
             toast.success('Inicializando user FAIL')
         } finally {
-            setTrasactionPending(false) //Para no ahcer refresh todo el tiempo
-            setTrasactionPending(false)
+          setTransactionPending(false) //Para no ahcer refresh todo el tiempo
+          setTransactionPending(false)
         }
     }
 }
+
+
 
 //--------------------//
 

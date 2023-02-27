@@ -7,6 +7,7 @@ import {
   ClockIcon,
   ArrowsUpDownIcon,
   Cog6ToothIcon,
+  ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "../../utils/classNames";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -58,8 +59,8 @@ export default function NavMenu(props) {
       subIndex: 1,
     },
     {
-      icon: Cog6ToothIcon,
-      item: "Settings",
+      icon: ShoppingBagIcon,
+      item: "Market",
       subIndex: 2,
     },
   ];
