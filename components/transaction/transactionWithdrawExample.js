@@ -47,6 +47,7 @@ function ModalQR(props) {
           href="https://gold-fox-b82.notion.site/Pasos-para-retirar-efectivo-en-cualquier-sucursal-MoneyGram-93639e30b2b44f52947a4fcd421050d3"
           className="w-full rounded-lg bg-[#16d542] p-2 hover:bg-opacity-70"
           target="_blank"
+          rel="noreferrer"
         >
           <span className="font-medium text-white">
             Instrucciones detalladas
