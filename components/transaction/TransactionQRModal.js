@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "../Modal";
+import Modal from "../modal";
 import {
   createQR,
   encodeURL,
@@ -17,8 +17,9 @@ import bs58 from "bs58";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function TransactionQRModal(props) {
-  const { modalOpen, setModalOpen, userAddress, setQrCode, qrCode } = props;
+  const { modalOpen, setModalOpen, mainUser, setQrCode, qrCode } = props;
   const [qtySol, setQtySol] = useState(1);
+
   const qrRef = useRef();
   const { connection } = useConnection();
   const { publicKey } = useWallet();
@@ -94,7 +95,7 @@ function ModalQR(props) {
 
         <div className="">
           <p className="text-center text-lg font-medium text-gray-800">
-            {(userAddress)}
+            {userAddress}
           </p>
           <p className="text-md text-center font-light text-gray-600">
             Indica cantidad de SOL a recibir

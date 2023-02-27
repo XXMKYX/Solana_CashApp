@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "../Modal";
+import Modal from "../modal";
 import {
   createQR,
   encodeURL,
@@ -15,9 +15,19 @@ import { useEffect, useRef, useState } from "react";
 import { truncate } from "../../utils/string";
 import bs58 from "bs58";
 import { useWallet } from "@solana/wallet-adapter-react";
+import Action from "../header/action";
+import NewTransactionModal from "./newTransactionModal";
 
 export default function TransactionQRSendModal(props) {
-  const { modalOpen, setModalOpen, userAddress, setQrCode, qrCode } = props;
+  const {
+    modalOpen,
+    setModalOpen,
+    userAddress,
+    setQrCode,
+    qrCode,
+    newTransactionModalOpen,
+    setNewTransactionModalOpen,
+  } = props;
   const [qtySol, setQtySol] = useState(1);
   const [receiptWallet, setReceiptWallet] = useState("");
   const qrRef = useRef();
@@ -80,6 +90,17 @@ export default function TransactionQRSendModal(props) {
         setQtySol={setQtySol}
         receiptWallet={receiptWallet}
         setReceiptWallet={setReceiptWallet}
+        newTransactionModalOpen={newTransactionModalOpen}
+        setNewTransactionModalOpen={setNewTransactionModalOpen}
+      />
+
+      <NewTransactionModal
+        modalOpen={newTransactionModalOpen}
+        setModalOpen={setNewTransactionModalOpen}
+        setAmount={setQtySol}
+        amount={qtySol}
+        receiver={receiptWallet}
+        setReceiver={setReceiptWallet}
       />
     </>
   );
@@ -96,6 +117,8 @@ function ModalQR(props) {
     qrRef,
     setReceiptWallet,
     receiptWallet,
+    setNewTransactionModalOpen,
+    newTransactionModalOpen,
   } = props;
   return (
     <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
@@ -159,6 +182,15 @@ function ModalQR(props) {
                 className="w-full rounded-lg bg-[#16d542] p-2 hover:bg-opacity-70"
               >
                 <span className="font-medium text-white">Modify QR Code</span>
+              </button>
+              <button
+                onClick={() => {
+                  setQrCode(!qrCode);
+                  setNewTransactionModalOpen(!newTransactionModalOpen);
+                }}
+                className="ml-10 w-full rounded-lg bg-[#16d542] p-2 hover:bg-opacity-70"
+              >
+                <span className="font-medium text-white">Pay w SolPay</span>
               </button>
             </>
           )}

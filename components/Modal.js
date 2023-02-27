@@ -2,9 +2,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
 const Modal = ({ modalOpen, setModalOpen, children }) => {
-  console.log("intentando");
+
   const closeModal = () => {
-    console.log("cerrando");
     setModalOpen(false);
   };
 

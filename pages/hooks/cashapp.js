@@ -1,4 +1,4 @@
-import {       useEffect } from "react";
+import { useEffect } from "react";
 import { getAvatarUrl } from "../../functions/getAvatarUrl";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -13,22 +13,13 @@ import {
 } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 
-
-import { MirrorWorld, ClusterEnvironment, IUser } from "@mirrorworld/web3.js";
-
 import { useState } from "react";
-const mirrorworld = new MirrorWorld({
-  apiKey: "mw_vwRDYXmbncKDIM6BSF0Tl2PPISGpY4kQjuo",
-  env: ClusterEnvironment.testnet, // Can be ClusterEnvionment.mainnet for mainnet
-});
 
 export const useCashApp = () => {
-  
-  const [mainUser, setMainUser] = useState();
   const [avatar, setAvatar] = useState("");
   const [userAddress, setUserAddress] = useState("404");
   const { connected, publicKey, sendTransaction } = useWallet();
- 
+
   // const [amount, setAmount] = useState(0)
   const [receiver, setReceiver] = useState("");
   const [transactionPurpose, setTransactionPurpose] = useState("");
@@ -52,13 +43,6 @@ export const useCashApp = () => {
   const [transactions, setTransactions] = useLocalStorage("transactions", []);
   const [deposits, setdeposits] = useLocalStorage("deposit", []);
 
-//Mirror
-  const login= async()=> {
-    const { user } = await mirrorworld.login();
-    let final = JSON.stringify(user);
-    setMainUser(JSON.parse(final));
-    await getTokens();
-  }
   // Get Avatar based on the userAddress
   useEffect(() => {
     if (connected) {
@@ -69,7 +53,6 @@ export const useCashApp = () => {
       setUserAddress("default");
     }
   }, [connected]);
-
 
   //Transaccion
   const makeTrasaction = async (fromWallet, toWallet, amount, reference) => {
@@ -160,6 +143,7 @@ export const useCashApp = () => {
     connected,
     publicKey,
     avatar,
+    setAvatar,
     userAddress,
     doTransaction,
     amount,
@@ -172,7 +156,5 @@ export const useCashApp = () => {
     setTransactions,
     setNewTransactionModalOpen,
     newTransactionModalOpen,
-    login,
-    
   };
 };

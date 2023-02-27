@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import TransactionDetailModal from './TransactionDetailModal'
+import TransactionDetailModal from './transactionDetailModal'
 import TransactionItem from './TransactionItem'
 
 const TransactionsList = ({ transactions, title }) => {

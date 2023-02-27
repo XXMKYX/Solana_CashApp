@@ -16,11 +16,20 @@ import { useWallet } from "@solana/wallet-adapter-react";
 
 import TransactionQRModal from "../../transaction/transactionQRModal";
 import TransactionQRSendModal from "../../transaction/transactionQRSendModal";
-import Modal from "../../Modal";
+import Modal from "../../modal";
 import TransactionWithdrawExample from "../../transaction/transactionWithdrawExample";
 
 export default function Remesas(props) {
-  const { setQrCode, qrCode, txs, publicKey } = props;
+  const {
+    setQrCode,
+    qrCode,
+    txs,
+    publicKey,
+    mainUser,
+    newTransactionModalOpen,
+    setNewTransactionModalOpen,
+  } = props;
+  console.log(mainUser);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSendOpen, setModalSendOpen] = useState(false);
   const [modalVideoOpen, setModalVideoOpen] = useState(false);
@@ -61,6 +70,8 @@ export default function Remesas(props) {
           myKey={publicKey}
           qrCode={qrCode}
           setQrCode={setQrCode}
+          newTransactionModalOpen={newTransactionModalOpen}
+          setNewTransactionModalOpen={setNewTransactionModalOpen}
         />
       )}
     </>
@@ -98,7 +109,7 @@ function MainRemesas(props) {
             setModalVideoOpen(true);
           }}
         >
-          <p>¿Cómo retirar? jsa</p>
+          <p>¿Cómo retirar?</p>
         </div>
         <div
           className="bg-slate-200 lg:py-72 lg:px-28"

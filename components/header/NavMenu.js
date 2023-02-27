@@ -1,36 +1,34 @@
 import { MirrorWorld, ClusterEnvironment, IUser } from "@mirrorworld/web3.js";
-import Action from "./Action";
+import Action from "./action";
 import { useState, useEffect } from "react";
+
+import { getAvatarUrl } from "../../functions/getAvatarUrl";
+import {
+  ClockIcon,
+  ArrowsUpDownIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
+import { classNames } from "../../utils/classNames";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+require("@solana/wallet-adapter-react-ui/styles.css"); //Default Style to Wallet Connection button
+
 const mirrorworld = new MirrorWorld({
   apiKey: "mw_vwRDYXmbncKDIM6BSF0Tl2PPISGpY4kQjuo",
   env: ClusterEnvironment.testnet, // Can be ClusterEnvionment.mainnet for mainnet
 });
 
-import {
-  ClockIcon,
-  ArrowsUpDownIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
-import { classNames } from "../../utils/classNames";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { truncate } from "../../utils/string";
-import Home from "../../pages";
-import { useCashApp } from "../../pages/hooks/cashapp";
-require("@solana/wallet-adapter-react-ui/styles.css"); //Default Style to Wallet Connection button
-import { getAvatarUrl } from "../../functions/getAvatarUrl";
-
 export default function NavMenu(props) {
-  const [mainUser, setMainUser] = useState();
+  const { publicKey, setIndex, index, setAvatar, mainUser, setMainUser } =
+    props;
+
   const [tokens, setTokens] = useState();
-  const { publicKey, setIndex, index } = props;
-  const [avatar, setAvatar] = useState("");
+
   async function login() {
     const { user } = await mirrorworld.login();
     let final = JSON.stringify(user);
     setMainUser(JSON.parse(final));
     await getTokens();
+    setAvatar(getAvatarUrl(user["wallet"]["sol_address"]));
   }
 
   async function transfer() {
@@ -47,14 +45,7 @@ export default function NavMenu(props) {
     let final = JSON.stringify(data);
     setTokens(JSON.parse(final));
   }
-  //let mirrorWallet = mainUser["wallet"]["sol_address"]
-  //const mirrorUser = mainUser["username"]
 
-  //console.log(mainUser["username"])
-  // console.log(mirrorUser)
-  //  publicKey =
-
-  //console.log(mainUser.wallet.sol_address)
   const menus = [
     {
       icon: ClockIcon,
@@ -81,25 +72,86 @@ export default function NavMenu(props) {
             <MenuNavBar menus={menus} index={index} setIndex={setIndex} />
           </div>
         )}
+
+        {mainUser && (
+          <div className="flex flex-1 flex-col justify-evenly">
+            <MenuNavBar menus={menus} index={index} setIndex={setIndex} />
+          </div>
+        )}
+
         <div className="flex flex-1 flex-col justify-end">
-          {mainUser ? (
-            <></>
-          ) : (
+          {!mainUser ? (
             <>
-              <WalletMultiButton></WalletMultiButton>
+              <div className="mb-40">
+                <WalletMultiButton></WalletMultiButton>
+              </div>
             </>
+          ) : (
+            <></>
           )}
         </div>
 
-        {publicKey ? (
-          <></>
-        ) : (
+        {!publicKey && !mainUser ? (
           <>
-            <button onClick={login}>¿No tienes wallet?</button>
+            <button onClick={login} className="mb-10">
+              ¿No tienes wallet?
+            </button>
           </>
+        ) : (
+          <></>
         )}
+      </nav>
+    </>
+  );
+}
 
-        {mainUser ? (
+function NavMenuItem(props) {
+  const { setIndex, Icon, item, index, subIndex } = props;
+  return (
+    <>
+      <div>
+        <li
+          key={index}
+          onClick={() => setIndex(subIndex)}
+          className={classNames(
+            "-mb-30 flex cursor-pointer space-x-3",
+            index === subIndex
+              ? "text-white"
+              : "text-lightgray  transition-all hover:text-pink-500",
+            "font-semibold"
+          )}
+        >
+          <Icon className="h-6 w-6 " />
+          <span>{item}</span>
+        </li>
+      </div>
+    </>
+  );
+}
+
+function MenuNavBar(props) {
+  const { menus, setIndex, index } = props;
+
+  return (
+    <>
+      {menus.map((i, id) => (
+        <NavMenuItem
+          key={id}
+          Icon={i.icon}
+          item={i.item}
+          subIndex={i.subIndex}
+          index={index}
+          setIndex={setIndex}
+        />
+      ))}
+    </>
+  );
+}
+
+/* 
+
+
+{mirrorUser ? (
           <>
             <div className="user-info">
               <div className="user-info__user">
@@ -140,48 +192,5 @@ export default function NavMenu(props) {
         ) : (
           <></>
         )}
-      </nav>
-    </>
-  );
-}
 
-function NavMenuItem(props) {
-  const { setIndex, Icon, item, index, subIndex } = props;
-  return (
-    <>
-      <li
-        key={index}
-        onClick={() => setIndex(subIndex)}
-        className={classNames(
-          "flex cursor-pointer space-x-3",
-          index === subIndex
-            ? "text-white"
-            : "text-lightgray  transition-all hover:text-pink-500",
-          "font-semibold"
-        )}
-      >
-        <Icon className="h-6 w-6 " />
-        <span>{item}</span>
-      </li>
-    </>
-  );
-}
-
-function MenuNavBar(props) {
-  const { menus, setIndex, index } = props;
-
-  return (
-    <>
-      {menus.map((i, id) => (
-        <NavMenuItem
-          key={id}
-          Icon={i.icon}
-          item={i.item}
-          subIndex={i.subIndex}
-          index={index}
-          setIndex={setIndex}
-        />
-      ))}
-    </>
-  );
-}
+*/
