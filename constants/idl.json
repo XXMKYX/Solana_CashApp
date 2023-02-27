@@ -1,0 +1,142 @@
+{
+    "version": "0.1.0",
+    "name": "smart_shop",
+    "constants": [
+      {
+        "name": "USER_TAG",
+        "type": "bytes",
+        "value": "[85, 83, 69, 82, 95, 83, 84, 65, 84, 69]"
+      },
+      {
+        "name": "ITEM_TAG",
+        "type": "bytes",
+        "value": "[73, 84, 69, 77, 95, 83, 84, 65, 84, 69]"
+      },
+      {
+        "name": "BOOK_TAG",
+        "type": "bytes",
+        "value": "[66, 79, 79, 75, 95, 83, 84, 65, 84, 69]"
+      }
+    ],
+    "instructions": [
+      {
+        "name": "initializeUser",
+        "accounts": [
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "userProfile", "isMut": true, "isSigner": false },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": []
+      },
+      {
+        "name": "addItem",
+        "accounts": [
+          { "name": "userProfile", "isMut": true, "isSigner": false },
+          { "name": "itemAccount", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "location", "type": "string" },
+          { "name": "country", "type": "string" },
+          { "name": "price", "type": "string" },
+          { "name": "img", "type": "string" }
+        ]
+      },
+      {
+        "name": "updateItem",
+        "accounts": [
+          { "name": "itemAccount", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "itemIdx", "type": "u8" },
+          { "name": "location", "type": "string" },
+          { "name": "country", "type": "string" },
+          { "name": "price", "type": "string" },
+          { "name": "img", "type": "string" }
+        ]
+      },
+      {
+        "name": "removeItem",
+        "accounts": [
+          { "name": "userProfile", "isMut": true, "isSigner": false },
+          { "name": "itemAccount", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [{ "name": "itemIdx", "type": "u8" }]
+      },
+      {
+        "name": "bookItem",
+        "accounts": [
+          { "name": "userProfile", "isMut": true, "isSigner": false },
+          { "name": "bookingAccount", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "idx", "type": "u8" },
+          { "name": "date", "type": "string" },
+          { "name": "location", "type": "string" },
+          { "name": "country", "type": "string" },
+          { "name": "price", "type": "string" },
+          { "name": "img", "type": "string" }
+        ]
+      },
+      {
+        "name": "cancelBooking",
+        "accounts": [
+          { "name": "bookingAccount", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [{ "name": "bookingIdx", "type": "u8" }]
+      }
+    ],
+    "accounts": [
+      {
+        "name": "UserProfile",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "authority", "type": "publicKey" },
+            { "name": "lastItem", "type": "u8" },
+            { "name": "itemCount", "type": "u8" }
+          ]
+        }
+      },
+      {
+        "name": "ItemAccount",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "authority", "type": "publicKey" },
+            { "name": "idx", "type": "u8" },
+            { "name": "location", "type": "string" },
+            { "name": "country", "type": "string" },
+            { "name": "price", "type": "string" },
+            { "name": "img", "type": "string" },
+            { "name": "isReserved", "type": "bool" }
+          ]
+        }
+      },
+      {
+        "name": "BookingAccount",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "authority", "type": "publicKey" },
+            { "name": "date", "type": "string" },
+            { "name": "idx", "type": "u8" },
+            { "name": "location", "type": "string" },
+            { "name": "country", "type": "string" },
+            { "name": "price", "type": "string" },
+            { "name": "img", "type": "string" },
+            { "name": "isReserved", "type": "bool" }
+          ]
+        }
+      }
+    ]
+  }

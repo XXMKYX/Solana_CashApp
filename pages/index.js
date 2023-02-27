@@ -10,6 +10,8 @@ import NewTransactionModal from "../components/transaction/newTransactionModal";
 import TransactionsList from "../components/transaction/transactionsList";
 import TransactionQRModal from "../components/transaction/transactionQRModal";
 import Remesas from "../components/main/remesas/remesas";
+//SmartContract Market
+import Market from "../components/main/remesas/market";
 
 /* Methods */
 import { getAvatarUrl } from "../functions/getAvatarUrl";
@@ -26,6 +28,9 @@ export default function Home() {
     transactions,
     newTransactionModalOpen,
     setNewTransactionModalOpen,
+    initialized,
+    initializeUser,
+    transactionPending
   } = useCashApp(); //Es mejor pasarla po Hook que por Props ya que asi la podemos mandar donde sea y no solo al child
 
   const [index, setIndex] = useState(0);
@@ -34,6 +39,8 @@ export default function Home() {
   const [qrCode, setQrCode] = useState(false);
   const [mirrorUser, setMirrorUser] = useState(undefined);
   const [mainUser, setMainUser] = useState();
+
+  
   return (
     <div className="flex min-h-screen ">
       <LeftMenu
@@ -115,6 +122,7 @@ function LeftMenu(props) {
           mainUser={mainUser}
           setMainUser={setMainUser}
         />
+        
       </div>
     </>
   );
@@ -133,6 +141,7 @@ function RightMenu(props) {
     setNewTransactionModalOpen,
   } = props;
   const { mainUser, setMainUser } = props;
+  const {initialized,initializeUser, transactionPending} = useCashApp();
   return (
     <>
       {
@@ -165,6 +174,15 @@ function RightMenu(props) {
           setNewTransactionModalOpen={setNewTransactionModalOpen}
         />
       )}
+
+      {index === 2 && (
+        <Market 
+          initialized={initialized} 
+          initializeUser = {initializeUser} 
+          transactionPending = {transactionPending}
+        />
+      )}
+
       <div className="absolute !flex !flex-col !justify-end "></div>
     </>
   );

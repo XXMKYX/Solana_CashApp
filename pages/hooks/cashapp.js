@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import { getAvatarUrl } from "../../functions/getAvatarUrl";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
   clusterApiUrl,
   Connection,
@@ -14,6 +14,16 @@ import {
 import BigNumber from "bignumber.js";
 
 import { useState } from "react";
+
+//To SmartContract in Anchor //
+import {ACCOUNTS_PROGRAM_PUBKEY} from "../../constants"
+import IDL from "../../constants/idl.json"
+import * as anchor from "@project-serum/anchor";
+import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
+import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+import {toast} from "react-hot-toast";
+import parseJSON from "date-fns/parseJSON";
+//---------------------------//
 
 export const useCashApp = () => {
   const [avatar, setAvatar] = useState("");
@@ -53,6 +63,83 @@ export const useCashApp = () => {
       setUserAddress("default");
     }
   }, [connected]);
+
+
+//SmartContract Anhor //
+const anchorWallet = useAnchorWallet()
+const [initialized, setInitialized] = useState(false) //Comienza en false y cuando inicializa cambiaria a true
+const [transactionPending, setTrasactionPending] = useState(false)
+
+//averigua que programa es
+const program = useMemo (()=>{
+    if(anchorWallet) {
+        const provider = new anchor.AnchorProvider(connection,
+        anchorWallet,anchor.AnchorProvider.defaultOptions())
+  
+        return new anchor.Program(IDL,ACCOUNTS_PROGRAM_PUBKEY,provider)
+    }
+},[connection, anchorWallet])
+
+useEffect(()=>{
+  const start = async () =>{ //Inicializa
+      if(program && publicKey && !transactionPending){
+          try {
+              //Sustituye la accion de ingresar las seeds en solpg para obtener el userProfile
+              const [profilePda] = await findProgramAddressSync([utf8.encode("USER_STATE"), //Encuenttra un PDA  con las seeds
+              publicKey.toBuffer()],program.programId) //toBuffer da formato a la pubkey
+              const profileAccount = await program.account.userProfile.fetch(profilePda) //Espera el perfil
+              //Existe un userProfile?
+              if(profileAccount){
+                  setInitialized(true)//Carga todos los ItemsAccount
+                  console.log("LOAD ITEMS")
+                  console.log(profileAccount.authority.toJSON())
+              }else{
+                  //Inicializa uno nuevo Profile
+                  console.log("Se requiere inicializar el usuario")
+                  setInitialized(false)
+              }
+
+          } catch (error) {
+              console.log(error)
+              //setInitialized(false)
+          }
+      }
+  }
+  start()//call the function
+},[publicKey, program, transactionPending]) //Sera cada que cambie la pubkey, program y trx
+
+  //Funcion para inicializar (El usuario ya esta onChain)
+const initializeUser = async()=>{
+    if(program && publicKey){
+        try {
+            console.log("try")
+            setTrasactionPending(true)
+            const[profilePda] = findProgramAddressSync([utf8.encode("USER_STATE"), //Encuenttra un PDA con las seeds
+            publicKey.toBuffer()],program.programId)
+            
+            const tx = await program.methods
+            .initializeUser()
+            .accounts({
+                userProfile: profilePda,
+                authority: publicKey,
+                systemProgram: SystemProgram.programId,
+            })
+            .rpc()
+            setInitialized(true)
+            
+            toast.success('Exito inicializando user')
+        } catch (error) {
+            console.log(error)
+            toast.success('Inicializando user FAIL')
+        } finally {
+            setTrasactionPending(false) //Para no ahcer refresh todo el tiempo
+            setTrasactionPending(false)
+        }
+    }
+}
+
+//--------------------//
+
 
   //Transaccion
   const makeTrasaction = async (fromWallet, toWallet, amount, reference) => {
@@ -156,5 +243,8 @@ export const useCashApp = () => {
     setTransactions,
     setNewTransactionModalOpen,
     newTransactionModalOpen,
+    initialized,
+    initializeUser,
+    transactionPending
   };
 };
