@@ -14,8 +14,8 @@ const TransactionsList = ({ transactions, title }) => {
 
     return (
         <div>
-            <div className="bg-[#f6f6f6] pb-4 pt-10">
-                <p className="mx-auto max-w-3xl px-10 text-sm font-medium uppercase text-[#abafb2] xl:px-0">{title}</p>
+            <div className="bg-transparent pb-4 pt-10">
+                <p className="mx-auto max-w-3xl px-10 text-sm font-medium uppercase text-[#abafb2] xl:px-0 bg-transparent">{title}</p>
             </div>
             <div className="mx-auto max-w-3xl divide-y divide-gray-100 py-4 px-10 xl:px-0">
                 {transactions.map(({ id, to, amount, description, transactionDate }) => (

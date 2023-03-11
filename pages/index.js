@@ -34,7 +34,7 @@ export default function Home() {
   const [mainUser, setMainUser] = useState();
 
   return (
-    <div className="flex min-h-screen ">
+    <div className="flex min-h-screen bg-gradient-to-l from-indigo-900 ... to-purple-800">
       <LeftMenu
         avatar={avatar}
         setAvatar={setAvatar}
@@ -97,7 +97,7 @@ function LeftMenu(props) {
   const { mainUser, setMainUser } = props;
   return (
     <>
-      <div className="flex w-[260px] flex-col bg-gradient-to-r from-indigo-800 via-purple-600 to-violet-600 p-11">
+      <div className="flex w-[260px] flex-col bg-gradient-to-r from-indigo-900 ... p-11 ">
         <Profile
           avatar={avatar}
           userAddress={userAddress}

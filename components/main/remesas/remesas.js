@@ -91,35 +91,35 @@ function MainRemesas(props) {
 
   return (
     <>
-      <div className="container mx-auto flex items-center !justify-evenly sm:flex-col md:flex-col lg:flex-row">
-        <div
-          className="bg-slate-200 lg:py-72 lg:px-28 "
+      <div className="container mx-auto flex items-center !justify-evenly sm:flex-col md:flex-col lg:flex-row " >
+        <div 
+          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(false);
             setModalSendOpen(!modalSendOpen);
           }}
         >
-          <p>Enviar</p>
+          <p className="text-[#fff] hover:text-xl">Enviar</p>
         </div>
         <div
-          className="bg-slate-200 lg:py-72 lg:px-8"
+          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(true);
           }}
         >
-          <p>¿Cómo retirar?</p>
+          <p className="text-[#fff] hover:text-xl">¿Cómo retirar?</p>
         </div>
         <div
-          className="bg-slate-200 lg:py-72 lg:px-28"
+          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(false);
             setModalOpen(!modalOpen);
           }}
         >
-          <p>Recibir</p>
+          <p className="text-[#fff] hover:text-xl">Recibir</p>
         </div>
       </div>
     </>
