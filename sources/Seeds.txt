@@ -1,0 +1,61 @@
+Program_id: [HL9wyyDXk7L1G5tmev4ogD1rMViDikGDr96qyQZVjUg8]
+
+initializerUser{
+    Accounts{
+        authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address
+        userProfile: {
+            Seed(1): USER_STATE //string
+            +Pubkey: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address
+        } = Generated [7Z8R1SbEt4EH2cgUaHE6MPkbqi9ynzpti1XzSvZvkkJn]
+    }
+    addItem{
+        Args:{
+            //Arguments (string)
+        }
+        Accounts{
+            userProfile: 7Z8R1SbEt4EH2cgUaHE6MPkbqi9ynzpti1XzSvZvkkJn // From the initializerUser
+            itemAccount:{
+                Seed(1): ITEM_STATE //string
+                +Pubkey: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address
+                +u8: 0 //Ultimo item (Primera vez es cero)
+            } = Generated [7be8PLaNkfZXRSxUyUTMiM1r2cfNCoGW6mwUAY3qHTnB]
+            authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address
+    }
+    updateItem{
+        Args:{
+            //Arguments (string)
+        }
+        Accounts{
+            itemAccount: 7be8PLaNkfZXRSxUyUTMiM1r2cfNCoGW6mwUAY3qHTnB // From the itemAccount genereted
+            authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address           
+    }
+    removeItem{
+        Args:{
+            //Arguments (string)
+        }
+        Accounts{
+            userProfile: 7Z8R1SbEt4EH2cgUaHE6MPkbqi9ynzpti1XzSvZvkkJn // UserProfile 
+            itemAccount: 7be8PLaNkfZXRSxUyUTMiM1r2cfNCoGW6mwUAY3qHTnB // From the itemAccount genereted
+            authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address           
+    }
+    bookItem{
+        Args:{
+            //Arguments (string)
+        }
+        Accounts{
+            userProfile: 7Z8R1SbEt4EH2cgUaHE6MPkbqi9ynzpti1XzSvZvkkJn // UserProfile
+            bookingAccount:{
+                Seed(1): BOOK_STATE //string
+                +Pubkey: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address
+            } = Generated [FpevWHR5fqoN2dCWD39BjkeQAh3zjnxXH8Dv2fSsPuJw]
+            authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address           
+    } 
+    cancelBooking{
+        Args:{
+            //Arguments (string)
+        }
+        Accounts{
+            bookingAccount: FpevWHR5fqoN2dCWD39BjkeQAh3zjnxXH8Dv2fSsPuJw //BookingAccount address
+            authority: 8e4AHjkGcDhvKNGWmbJoXUGvY2QcAJor9kmcLFNNaYSZ //My Address           
+    }    
+}
