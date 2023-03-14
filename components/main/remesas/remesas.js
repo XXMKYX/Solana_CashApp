@@ -1,22 +1,9 @@
 import React from "react";
-import {
-  createQR,
-  encodeURL,
-  findReference,
-  validateTransfer,
-  FindReferenceError,
-  ValidateTransferError,
-} from "@solana/pay";
-import { PublicKey, Keypair } from "@solana/web3.js";
-import BigNumber from "bignumber.js";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useEffect, useState } from "react";
-import { truncate } from "../../../utils/string";
-import { useWallet } from "@solana/wallet-adapter-react";
+
+import { useState } from "react";
 
 import TransactionQRModal from "../../transaction/transactionQRModal";
 import TransactionQRSendModal from "../../transaction/transactionQRSendModal";
-import Modal from "../../modal";
 import TransactionWithdrawExample from "../../transaction/transactionWithdrawExample";
 
 export default function Remesas(props) {
@@ -91,9 +78,9 @@ function MainRemesas(props) {
 
   return (
     <>
-      <div className="container mx-auto flex items-center !justify-evenly sm:flex-col md:flex-col lg:flex-row " >
-        <div 
-          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
+      <div className="container mx-auto flex items-center !justify-evenly sm:flex-col md:flex-col lg:flex-row ">
+        <div
+          className="... flex cursor-pointer flex-col items-center space-y-3 border-4 border-dashed bg-pink-500 p-10 "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(false);
@@ -103,7 +90,7 @@ function MainRemesas(props) {
           <p className="text-[#fff] hover:text-xl">Enviar</p>
         </div>
         <div
-          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
+          className="... flex cursor-pointer flex-col items-center space-y-3 border-4 border-dashed bg-pink-500 p-10 "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(true);
@@ -112,7 +99,7 @@ function MainRemesas(props) {
           <p className="text-[#fff] hover:text-xl">¿Cómo retirar?</p>
         </div>
         <div
-          className="flex cursor-pointer flex-col items-center space-y-3 bg-pink-500 p-10 border-4 border-dashed ... "
+          className="... flex cursor-pointer flex-col items-center space-y-3 border-4 border-dashed bg-pink-500 p-10 "
           onClick={() => {
             setQrCode(false);
             setModalVideoOpen(false);

@@ -1,21 +1,10 @@
 import React from "react";
-import Modal from "../modal";
-import {
-  createQR,
-  encodeURL,
-  findReference,
-  validateTransfer,
-  FindReferenceError,
-  ValidateTransferError,
-} from "@solana/pay";
+import { createQR, encodeURL } from "@solana/pay";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useEffect, useRef, useState } from "react";
-import { truncate } from "../../utils/string";
-import bs58 from "bs58";
 import { useWallet } from "@solana/wallet-adapter-react";
-import Action from "../header/action";
 import NewTransactionModal from "./newTransactionModal";
 
 export default function TransactionQRSendModal(props) {
